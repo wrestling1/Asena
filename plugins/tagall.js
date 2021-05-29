@@ -2,75 +2,220 @@
 Licensed under the  GPL-3.0 License;
 you may not use this file except in compliance with the License.
 WhatsAsena - Yusuf Usta
-Developer & Co-Founder - Phaticusthiccy
 */
 
 const Asena = require('../events');
-const {MessageType, Mimetype, MessageOptions} = require('@adiwajshing/baileys');
-const {spawnSync} = require('child_process');
-const Config = require('../config');
-const chalk = require('chalk');
-const fs = require('fs');
-const dil = require('axios');
+const {MessageType} = require('@adiwajshing/baileys');
 
 const Language = require('../language');
-const Lang = Language.getString('system_stats');
+const Lang = Language.getString('tagall');
 
-Asena.addCommand({pattern: 'rose', fromMe: true, desc: Lang.ALIVE_DESC}, (async (message, match) => {
+const Config = require('../config')
 
-    
-    if (Config.ALIVEMSG == 'default') {
+Asena.addCommand({pattern: 'tagall ?(.*)', fromMe: true, desc: Lang.TAGALL_DESC }, (async (message, match) => {
 
-        await message.client.sendMessage(
-            message.jid, 
-            fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/VID-20210209-WA0058.mp4"),
-            MessageType.video, 
-            { mimetype: Mimetype.gif, caption: "```WhatsAsena Founder Roseleyn İçin Çalışıyor!```\n\n*Version:* ```0.25.2 - Dev```\n*Grade:* ```Founder```\n*AI Packages:* ```Xteam / Eva / DeepAI / WhatsAsena / RTDA```\n*DeepAI Version:* ```1.0.17```\n*XTeam Verison:* ```4.4```" }
-        )
+    if (match[1] !== '' && !message.reply_message) {
+        grup = await message.client.groupMetadata(message.jid);
+        var jids = [];
+        mesaj = '';
+        grup['participants'].map(
+            async (uye) => {
+                mesaj += '@' + uye.id.split('@')[0] + ' ';
+                jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+            }
+        );
+        await message.client.sendMessage(message.jid,`${match[1]}`, MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
     }
-    else if (Config.ALIVEMSG == 'SELO') {
-        await message.client.sendMessage(
-            message.jid, 
-            fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/VID-20210228-WA0022.mp4"),
-            MessageType.video, 
-            { mimetype: Mimetype.mpeg, caption: "```WhatsAsena Founder Selo İçin Çalışıyor!```\n\n*Version:* 0.23.7 - Dev\n*Grade:* Founder\n*AIPackages:* Xteam / Eva / DeepAI / WhatsAsena / RTDA\n*DeepAI Version:* ```1.0.17```\n*XTeam Verison:* ```4.2```" }
-        )
+    else if (match[1] == '' && !message.reply_message) {
+        grup = await message.client.groupMetadata(message.jid);
+        var jids = [];
+        mesaj = '';
+        grup['participants'].map(
+            async (uye) => {
+                mesaj += '@' + uye.id.split('@')[0] + ' ';
+                jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+            }
+        );
+        await message.client.sendMessage(message.jid,mesaj, MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
     }
-    else if (Config.ALIVEMSG == 'EMO') {
-        await message.client.sendMessage(
-            message.jid, 
-            fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/ezgif-7-0bd4f49fd28c.mp4"),
-            MessageType.video, 
-            { mimetype: Mimetype.mpeg, caption: "```Bu Kalp Birtek Sana Atıyor 🖤```" }
-        )
-    }
-
-    else if (Config.ALIVEMSG == 'EMOC') {
-        await message.client.sendMessage(
-            message.jid, 
-            fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/4_5935988232951957622.mp4"),
-            MessageType.video, 
-            { mimetype: Mimetype.gif, caption: "```WhatsAsena Founder Emoc İçin Çalışıyor!```\n\n*Version:* ```0.25.2 - Dev```\n*Grade:* ```Moderator```\n*AI Packages:* ```Xteam / Eva / DeepAI / WhatsAsena / RTDA```\n*DeepAI Version:* ```1.0.17```\n*XTeam Verison:* ```4.4```" }
-        )
-    }
-    else {
-        const payload = Config.ALIVEMSG
-        const status = await message.client.getStatus()
-        const ppUrl = await message.client.getProfilePicture() 
-        const resim = await dil.get(ppUrl, {responseType: 'arraybuffer'})
-
-        if (!payload.includes('{pp}')) {
-            await message.client.sendMessage(message.jid,payload.replace('{user}', message.client.user.name).replace('{version}', Config.VERSION).replace('{info}', `${status.status}`), MessageType.text);
-        }
-        else if (payload.includes('{pp}')) {
-            await message.sendMessage(Buffer.from(resim.data), MessageType.image, { caption: payload.replace('{version}', Config.VERSION).replace('{pp}', '').replace('{info}', `${status.status}`) });
-        }
+    else if (message.reply_message) {
+        grup = await message.client.groupMetadata(message.jid);
+        var jids = [];
+        mesaj = '';
+        grup['participants'].map(
+            async (uye) => {
+                mesaj += '@' + uye.id.split('@')[0] + ' ';
+                jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+            }
+        );
+        var tx = message.reply_message.text
+        await message.client.sendMessage(message.jid,tx, MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
     }
 }));
 
-Asena.addCommand({pattern: 'sysd', fromMe: true, desc: Lang.SYSD_DESC}, (async (message, match) => {
-    const child = spawnSync('neofetch', ['--stdout']).stdout.toString('utf-8')
-    await message.sendMessage(
-        '```' + child + '```', MessageType.text
-    );
-}));
+if (Config.WORKTYPE == 'private') {
+    Asena.addCommand({ pattern: 'scan ?(.*)', fromMe: true, desc: Lang.SCAN}, (async (message, match) => { 
+
+        if (match[1] == '') return await message.client.sendMessage(message.jid, Lang.NO, MessageType.text);
+
+        var exists = await message.client.isOnWhatsApp(match[1])
+        if (exists) {
+            await message.client.sendMessage(message.jid, '```' + match[1] + '``` \n' + Lang.SUC + exists.jid, MessageType.text);
+        }
+        else {
+            await message.client.sendMessage(message.jid,'```' + match[1] + '``` \n' + Lang.UNSUC, MessageType.text);
+        }
+    }));
+    Asena.addCommand({pattern: 'tagadmin', fromMe: true, desc: Lang.TAGADMİN}, (async (message, match) => {
+        let grup = await message.client.groupMetadata(message.jid);
+        var jids = [];
+        mesaj = '';
+        grup['participants'].map(async (uye) => {
+            if (uye.isAdmin) {
+                mesaj += '@' + uye.id.split('@')[0] + ' ';
+                jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+            }
+        });
+        await message.client.sendMessage(message.jid,mesaj, MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
+    }));
+    Asena.addCommand({pattern: 'report ?(.*)', fromMe: true, desc: Lang.REPORT}, (async (message, match) => {
+        if (match[1] == '' && message.reply_message) {
+            let grup = await message.client.groupMetadata(message.jid);
+            var jids = [];
+            mesaj = '';
+            grup['participants'].map(async (uye) => {
+                if (uye.isAdmin) {
+                    mesaj += '@' + uye.id.split('@')[0] + ' ';
+                    jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+                }
+            });
+            await message.client.sendMessage(message.jid,Lang.USER + '@' + message.reply_message.jid.split('@')[0] , MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
+        
+        }
+        else if (match[1] !== '' && message.reply_message) {
+            let grup = await message.client.groupMetadata(message.jid);
+            var jids = [];
+            mesaj = '';
+            grup['participants'].map(async (uye) => {
+                if (uye.isAdmin) {
+                    mesaj += '@' + uye.id.split('@')[0] + ' ';
+                    jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+                }
+            });
+            await message.client.sendMessage(message.jid,Lang.USER + '@' + message.reply_message.jid.split('@')[0] + Lang.REASON + `${match[1]}`, MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
+        }
+        else if (!message.reply_message) {
+            return message.client.sendMessage(message.jid,Lang.REPLY, MessageType.text);
+        }
+    }));
+}
+else if (Config.WORKTYPE == 'public') {
+    Asena.addCommand({ pattern: 'scan ?(.*)', fromMe: false, desc: Lang.SCAN}, (async (message, match) => { 
+
+        if (match[1] == '') return await message.client.sendMessage(message.jid, Lang.NO, MessageType.text);
+
+        var exists = await message.client.isOnWhatsApp(match[1])
+        if (exists) {
+            await message.client.sendMessage(message.jid, '```' + match[1] + '``` \n' + Lang.SUC + exists.jid, MessageType.text);
+        }
+        else {
+            await message.client.sendMessage(message.jid,'```' + match[1] + '``` \n' + Lang.UNSUC, MessageType.text);
+        }
+    }));
+    Asena.addCommand({ pattern: 'scan ?(.*)', fromMe: true, desc: Lang.SCAN}, (async (message, match) => { 
+
+        if (match[1] == '') return await message.client.sendMessage(message.jid, Lang.NO, MessageType.text);
+
+        var exists = await message.client.isOnWhatsApp(match[1])
+        if (exists) {
+            await message.client.sendMessage(message.jid, '```' + match[1] + '``` \n' + Lang.SUC + exists.jid, MessageType.text);
+        }
+        else {
+            await message.client.sendMessage(message.jid,'```' + match[1] + '``` \n' + Lang.UNSUC, MessageType.text);
+        }
+    }));
+    Asena.addCommand({pattern: 'tagadmin', fromMe: false, desc: Lang.TAGADMİN}, (async (message, match) => {
+        let grup = await message.client.groupMetadata(message.jid);
+        var jids = [];
+        mesaj = '';
+        grup['participants'].map(async (uye) => {
+            if (uye.isAdmin) {
+                mesaj += '@' + uye.id.split('@')[0] + ' ';
+                jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+            }
+        });
+        await message.client.sendMessage(message.jid,mesaj, MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
+    }));
+    Asena.addCommand({pattern: 'tagadmin', fromMe: true, desc: Lang.TAGADMİN}, (async (message, match) => {
+        let grup = await message.client.groupMetadata(message.jid);
+        var jids = [];
+        mesaj = '';
+        grup['participants'].map(async (uye) => {
+            if (uye.isAdmin) {
+                mesaj += '@' + uye.id.split('@')[0] + ' ';
+                jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+            }
+        });
+        await message.client.sendMessage(message.jid,mesaj, MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
+    }));
+    Asena.addCommand({pattern: 'report ?(.*)', fromMe: false, desc: Lang.REPORT}, (async (message, match) => {
+        if (match[1] == '' && message.reply_message) {
+            let grup = await message.client.groupMetadata(message.jid);
+            var jids = [];
+            mesaj = '';
+            grup['participants'].map(async (uye) => {
+                if (uye.isAdmin) {
+                    mesaj += '@' + uye.id.split('@')[0] + ' ';
+                    jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+                }
+            });
+            await message.client.sendMessage(message.jid,Lang.USER + '@' + message.reply_message.jid.split('@')[0] , MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
+        
+        }
+        else if (match[1] !== '' && message.reply_message) {
+            let grup = await message.client.groupMetadata(message.jid);
+            var jids = [];
+            mesaj = '';
+            grup['participants'].map(async (uye) => {
+                if (uye.isAdmin) {
+                    mesaj += '@' + uye.id.split('@')[0] + ' ';
+                    jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+                }
+            });
+            await message.client.sendMessage(message.jid,Lang.USER + '@' + message.reply_message.jid.split('@')[0] + Lang.REASON + `${match[1]}`, MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
+        }
+        else if (!message.reply_message) {
+            return message.client.sendMessage(message.jid,Lang.REPLY, MessageType.text);
+        }
+    }));
+    Asena.addCommand({pattern: 'report ?(.*)', fromMe: true, desc: Lang.REPORT}, (async (message, match) => {
+        if (match[1] == '' && message.reply_message) {
+            let grup = await message.client.groupMetadata(message.jid);
+            var jids = [];
+            mesaj = '';
+            grup['participants'].map(async (uye) => {
+                if (uye.isAdmin) {
+                    mesaj += '@' + uye.id.split('@')[0] + ' ';
+                    jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+                }
+            });
+            await message.client.sendMessage(message.jid,Lang.USER + '@' + message.reply_message.jid.split('@')[0] , MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
+        
+        }
+        else if (match[1] !== '' && message.reply_message) {
+            let grup = await message.client.groupMetadata(message.jid);
+            var jids = [];
+            mesaj = '';
+            grup['participants'].map(async (uye) => {
+                if (uye.isAdmin) {
+                    mesaj += '@' + uye.id.split('@')[0] + ' ';
+                    jids.push(uye.id.replace('c.us', 's.whatsapp.net'));
+                }
+            });
+            await message.client.sendMessage(message.jid,Lang.USER + '@' + message.reply_message.jid.split('@')[0] + Lang.REASON + `${match[1]}`, MessageType.extendedText, {contextInfo: {mentionedJid: jids}, previewType: 0})
+        }
+        else if (!message.reply_message) {
+            return message.client.sendMessage(message.jid,Lang.REPLY, MessageType.text);
+        }
+    }));
+}
