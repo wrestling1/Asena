@@ -11,7 +11,7 @@ const LOADING = "Videonuz Yüklənilir..."
 const NOT_FOUNDFB = "Video Tapılmadı"
 const CAPTION = "Açıqlama"
 
-Asena.addCommand({ pattern: 'instagram ?(.*)', fromMe: false, desc: IG_DESC}, async (message, match) => {
+Asena.addCommand({ pattern: 'instagram ?(.*)', fromMe: true, desc: IG_DESC}, async (message, match) => {
 
     const userName = match[1]
 
@@ -50,7 +50,7 @@ Asena.addCommand({ pattern: 'instagram ?(.*)', fromMe: false, desc: IG_DESC}, as
 
 
 
-Asena.addCommand({ pattern: 'fb ?(.*)', fromMe: false, desc: FBDESC }, async (message, match) => {
+Asena.addCommand({ pattern: 'fb ?(.*)', fromMe: true, desc: FBDESC }, async (message, match) => {
 
     const userName = match[1]
 
