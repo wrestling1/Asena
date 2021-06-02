@@ -4,6 +4,9 @@ const fs = require('fs');
 const axios = require('axios');
 const request = require('request');
 const got = require("got");
+const QRReader = require('qrcode-reader');
+const fs = require('fs');
+const jimp = require('jimp');
 
 // Sentances
 const QR_DESC = "Sözü QR koduna çevirər"
@@ -17,4 +20,22 @@ Asena.addCommand({pattern: 'qr ?(.*)', fromMe: true, desc: QR_DESC}, (async (mes
 
     await message.sendMessage(Buffer.from(webimage.data), MessageType.image, {mimetype: Mimetype.jpg, caption: "Made By WhatsAsena"})
 
+}));
+
+Asena.addCommand({ pattern: 'rqr', fromMe: true, dontAddCommandList: true, desc: 'Read QR' }, (async (message, match) => {
+    var location = await message.client.downloadAndSaveMediaMessage({
+        key: {
+            remoteJid: message.reply_message.jid,
+            id: message.reply_message.id
+        },
+        message: message.reply_message.data.quotedMessage
+    });
+    const img = await jimp.read(fs.readFileSync(location));
+
+    const qr = new QRReader();
+    const value = await new Promise((resolve, reject) => {
+        qr.callback = (err, v) => err != null ? reject(err) : resolve(v);
+        qr.decode(img.bitmap);
+      });
+      await message.client.sendMessage(message.jid, value.result, MessageType.text, { quoted: message.data})
 }));
