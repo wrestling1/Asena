@@ -21,7 +21,7 @@ Asena.addCommand({pattern: 'qr ?(.*)', fromMe: true, desc: QR_DESC}, (async (mes
 
 }));
 
-Asena.addCommand({ pattern: 'rqr', fromMe: true, dontAddCommandList: true, desc: 'Read QR' }, (async (message, match) => {
+Asena.addCommand({ pattern: 'rqr', fromMe: true, desc: 'Read QR' }, (async (message, match) => {
     var location = await message.client.downloadAndSaveMediaMessage({
         key: {
             remoteJid: message.reply_message.jid,
@@ -29,12 +29,14 @@ Asena.addCommand({ pattern: 'rqr', fromMe: true, dontAddCommandList: true, desc:
         },
         message: message.reply_message.data.quotedMessage
     });
-    const img = await jimp.read(fs.readFileSync(location));
 
-    const qr = new QRReader();
-    const value = await new Promise((resolve, reject) => {
-        qr.callback = (err, v) => err != null ? reject(err) : resolve(v);
-        qr.decode(img.bitmap);
-      });
-      await message.client.sendMessage(message.jid, value.result, MessageType.text, { quoted: message.data})
+  let img = await jimp.read(fs.readFileSync(location));
+  let qr = new QRReader();
+  qr.callback = async function (err, value) {
+    if (err) {
+      return console.error(err);
+    }
+    await message.client.sendMessage(message.jid, 'Here what I readed : \n' +  value.result, MessageType.text, { quoted: message.data })
+  };
+  qr.decode(img.bitmap);
 }));
