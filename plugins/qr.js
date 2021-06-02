@@ -5,7 +5,6 @@ const axios = require('axios');
 const request = require('request');
 const got = require("got");
 const QRReader = require('qrcode-reader');
-const fs = require('fs');
 const jimp = require('jimp');
 
 // Sentances
