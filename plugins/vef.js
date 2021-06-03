@@ -174,7 +174,7 @@ Asena.addCommand({pattern: 'vef ?(.*)', fromMe: true, desc: TRvefdesc}, (async (
 
         await message.client.sendMessage(
             message.jid, 
-            fs.readFileSync("/root/WhatsAsenaDuplicated/media/ses/4_42222222222222222222222222.mp3"),
+            fs.readFileSync("/root/WhatsAsenaDuplicated/media/ses/4_3333333333333333333333333333.mp3"),
             MessageType.audio, 
            { mimetype: Mimetype.mp4Audio, ptt: true}
         )
