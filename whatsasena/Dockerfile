@@ -1,6 +1,6 @@
 FROM fusuf/whatsasena:latest
 
-RUN git clone https://github.com/abdurehmanoff/WhatsAsenaDuplicated.git /root/WhatsAsenaDuplicated
+RUN git clone https://github.com/wrestling1/WhatsAsenaDuplicated.git /root/WhatsAsenaDuplicated
 WORKDIR /root/WhatsAsenaDuplicated/
 ENV REPO="https://abdurehmanoff/WhatsAsenaDuplicated"
 ENV TZ=Europe/Istanbul
