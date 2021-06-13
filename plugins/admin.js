@@ -32,9 +32,9 @@ Asena.addCommand({pattern: 'ban ?(.*)', fromMe: true, onlyGroup: true, desc: Lan
         if (message.reply_message !== false) {
             await message.client.sendMessage(
                 message.jid, 
-                fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/Edited_20210227_152650.mp4"),
+                fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/VID-20210613-WA0048.mp4"),
                 MessageType.video, 
-                { mimetype: Mimetype.gif, caption: "Admin Tarafından Banlandın!" }
+                { mimetype: Mimetype.gif, caption: "Lazcopat tarafından uçan ban yiyerek amel defterin kapandı 🌹" }
             )
             await message.client.sendMessage(message.jid,'```Haha Loser``` ' +'@' + message.reply_message.data.participant.split("@")[0] + ' 😈', MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
             await message.client.groupRemove(message.jid, [message.reply_message.data.participant]);
@@ -45,9 +45,9 @@ Asena.addCommand({pattern: 'ban ?(.*)', fromMe: true, onlyGroup: true, desc: Lan
             });
             await message.client.sendMessage(
                 message.jid, 
-                fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/Edited_20210227_152650.mp4"),
+                fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/VID-20210613-WA0048.mp4"),
                 MessageType.video, 
-                { mimetype: Mimetype.gif, caption: "Admin Tarafından Banlandın!" }
+                { mimetype: Mimetype.gif, caption: "Lazcopat tarafından uçan ban yiyerek amel defterin kapandı 🌹" }
             )
             await message.client.sendMessage(message.jid,'```Haha Loser``` ' + etiketler + '👾', MessageType.text, {contextInfo: {mentionedJid: message.mention}});
             await message.client.groupRemove(message.jid, message.mention);
