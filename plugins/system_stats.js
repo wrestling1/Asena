@@ -25,7 +25,7 @@ Asena.addCommand({pattern: 'alive', fromMe: true, desc: Lang.ALIVE_DESC}, (async
             message.jid, 
             fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/VID-20210613-WA0019.mp4"),
             MessageType.video, 
-            { mimetype: Mimetype.gif, caption: "```WhatsAsena Lazcopat için çalışıyor```" }
+            { mimetype: Mimetype.gif, caption: "```WhatsApp Asena lazcopat için çalışıyor 🎃```\n*_Branş:güreş_*\n*_İl:İzmir/Denizli_*\n*_Bir kurşun kalbimde senden daha onurlu durur._*🌹" }
         )
     }
 }));
