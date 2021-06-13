@@ -104,9 +104,9 @@ Asena.addCommand({pattern: 'promote ?(.*)', fromMe: true, onlyGroup: true, desc:
             }
             await message.client.sendMessage(
                 message.jid, 
-                fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/giphy (2).mp4"),
+                fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/VID-20210613-WA0018.mp4"),
                 MessageType.video, 
-                { mimetype: Mimetype.gif, caption: "```Admin Tarafından Admin Yapıldın!```" }
+                { mimetype: Mimetype.gif, caption: "```Lazcopat Tarafından Admin Yapıldın!```" }
             )
             await message.client.sendMessage(message.jid,'```Buna Sevinmelisin``` ' + '@' + message.reply_message.data.participant.split("@")[0] + ' 🎉', MessageType.text, {contextInfo: {mentionedJid: [message.reply_message.data.participant]}});
             await message.client.groupMakeAdmin(message.jid, [message.reply_message.data.participant]);
@@ -123,9 +123,9 @@ Asena.addCommand({pattern: 'promote ?(.*)', fromMe: true, onlyGroup: true, desc:
 
             await message.client.sendMessage(
                 message.jid, 
-                fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/giphy (2).mp4"),
+                fs.readFileSync("/root/WhatsAsenaDuplicated/media/gif/VID-20210613-WA0018.mp4"),
                 MessageType.video, 
-                { mimetype: Mimetype.gif, caption: "```Admin Tarafından Admin Yapıldın!```" }
+                { mimetype: Mimetype.gif, caption: "```Lazcopat Tarafından Admin Yapıldın!```" }
             )
             await message.client.sendMessage(message.jid,'```Buna Sevinmelisin``` ' + etiketler + ' 🎉', MessageType.text, {contextInfo: {mentionedJid: message.mention}});
             await message.client.groupMakeAdmin(message.jid, message.mention);
